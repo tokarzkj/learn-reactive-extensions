@@ -104,18 +104,26 @@ export const findUniqueUsersNamed = (url: string): Observable<string> => {
 export const subscribeAndHandleAnError = (
   console: Logger,
   observable: Observable<string>
-) => {};
+) => {
+  observable.subscribe(null, console.error);
+};
 
 export const catchErrorEmitsASuccessMessage = (
   observable: Observable<any>
 ): Observable<any> => {
-  return observable;
+  return observable.pipe(catchError(e => of(e)));
 };
 
 export const convertSuccessfulFetchIntoError = (
   url: string
 ): Observable<any> => {
-  return empty();
+  return fromFetch(url).pipe(
+    map(res => {
+      if (!res.ok) {
+        console.error(res.statusText);
+      }
+    })
+  );
 };
 
 interface Tweet {
