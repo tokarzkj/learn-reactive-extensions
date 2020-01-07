@@ -50,11 +50,11 @@ export const logging = (
   console: Logger,
   observable: Observable<number>
 ): Observable<number> => {
-  return empty();
+  return observable.pipe(tap(o => console.log(o)));
 };
 
 export const createYourOwnObservable = (): Observable<number> => {
-  return empty();
+  return of(7, 8, 9);
 };
 
 export const getTheJSON = (url: string): Observable<any> => {
