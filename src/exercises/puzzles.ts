@@ -58,15 +58,25 @@ export const createYourOwnObservable = (): Observable<number> => {
 };
 
 export const getTheJSON = (url: string): Observable<any> => {
-  return empty();
+  return fromFetch(url).pipe(flatMap(response => response.json()));
 };
 
 export const takeFiveRows = (url: string): Observable<any> => {
-  return empty();
+  return fromFetch(url).pipe(
+    flatMap(res => res.json()),
+    flatMap(body => of(...body)),
+    take(5)
+  );
 };
 
 export const countValidUsers = (url: string): Observable<number> => {
-  return empty();
+  return fromFetch(url).pipe(
+    flatMap(res => res.json()),
+    flatMap(body => of(...body)),
+    tap(b => console.log(b)),
+    filter(i => i.user != null),
+    count()
+  );
 };
 
 export const findUsersNamed = (url: string): Observable<string> => {
