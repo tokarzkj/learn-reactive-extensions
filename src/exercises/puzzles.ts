@@ -17,7 +17,8 @@ import {
   filter,
   count,
   distinct,
-  catchError
+  catchError,
+  pluck
 } from "rxjs/operators";
 import { fromFetch } from "rxjs/fetch";
 import { Dispatch, SetStateAction } from "react";
@@ -80,11 +81,24 @@ export const countValidUsers = (url: string): Observable<number> => {
 };
 
 export const findUsersNamed = (url: string): Observable<string> => {
-  return empty();
+  return fromFetch(url).pipe(
+    flatMap(res => res.json()),
+    flatMap(body => of(...body)),
+    filter(i => i.user != null && i.user.name.startsWith("l")),
+    map(i => i.user),
+    pluck("name")
+  );
 };
 
 export const findUniqueUsersNamed = (url: string): Observable<string> => {
-  return empty();
+  return fromFetch(url).pipe(
+    flatMap(res => res.json()),
+    flatMap(body => of(...body)),
+    filter(i => i.user != null && i.user.name.startsWith("l")),
+    map(i => i.user),
+    pluck("name"),
+    distinct()
+  );
 };
 
 export const subscribeAndHandleAnError = (
