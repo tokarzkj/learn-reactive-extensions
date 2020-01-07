@@ -39,11 +39,11 @@ export const takeTwo = (observable: Observable<number>): Observable<number> => {
 };
 
 export const usingFetch = (url: string): Observable<Response> => {
-  return empty();
+  return fromFetch(url);
 };
 
 export const mapStatus = (invalidUrl: string): Observable<number> => {
-  return of(1);
+  return fromFetch(invalidUrl).pipe(map(res => res.status));
 };
 
 export const logging = (
