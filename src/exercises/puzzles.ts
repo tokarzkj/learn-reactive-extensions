@@ -120,7 +120,7 @@ export const convertSuccessfulFetchIntoError = (
   return fromFetch(url).pipe(
     map(res => {
       if (!res.ok) {
-        console.error(res.statusText);
+        throw res.statusText;
       }
     })
   );
